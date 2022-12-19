@@ -6,13 +6,10 @@ from django.shortcuts import render
 
 
 
-from django.shortcuts import (
-    get_list_or_404,
-    get_object_or_404,
+from rest_framework.generics import (
+    ListAPIView,
+    RetrieveAPIView
 )
-
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 
 
@@ -22,47 +19,34 @@ from .models import Tag, Startup
 
 # Create your views here.
 
-class TagApiDetail(APIView):
+class TagApiDetail(RetrieveAPIView):
 
-    def get(self, request, slug):
-        tag = get_object_or_404(Tag, slug=slug)
-        s_tag = TagSerializer(
-            tag,
-            context={"request": request}
-        )
-        return Response(s_tag.data)
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    # detail need a /slug
+    lookup_field = 'slug'
 
 
 
-class TagApiList(APIView):
+class TagApiList(ListAPIView):
 
-    def get(self, request):
-        tag_list = get_list_or_404(Tag)
-        s_tag = TagSerializer(
-            tag_list,
-            many=True,
-            context={"request": request}
-            )
-        return Response(s_tag.data)
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 # --- Startup ---
-class StartupAPIDetail(APIView):
+class StartupAPIDetail(RetrieveAPIView):
 
-    def get(self, request, slug):
-        startup = get_object_or_404(Startup, slug=slug)
-        s_startup = StartupSerializer(
-            startup,
-            context={'request':request}
-        )
-        return Response(s_startup.data)
+    queryset = Startup.objects.all()
+    serializer_class = StartupSerializer
+    # detail need a /slug
+    lookup_field = 'slug'
 
-class StartupAPIList(APIView):
-    def get(self, request):
-        startup_list = get_list_or_404(Startup)
-        s_startup = StartupSerializer(
-            startup_list,
-            many=True,
-            context={'request':request},
-        )
-        return Response(s_startup.data)
+class StartupAPIList(ListAPIView):
+    
+    queryset = Startup.objects.all()
+    serializer_class = StartupSerializer
             
+
+# --- it is important & usefull website for Serializer ---
+# https://www.cdrf.co/
+# --- 
