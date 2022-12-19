@@ -1,20 +1,23 @@
 
 from rest_framework.serializers import (
-    HyperlinkedIdentityField,
+    HyperlinkedModelSerializer,
     ModelSerializer,
 )
 
 from .models import NewsLink, Startup, Tag
 
-class TagSerializer(ModelSerializer):
-    
-    url = HyperlinkedIdentityField(
-        lookup_field="slug", view_name="api-tag-detail",
-    )
+class TagSerializer(HyperlinkedModelSerializer):
 
     class Meta:
         model = Tag
         fields = "__all__"
+        extra_kwargs = {
+            'url': {
+                'lookup_field': 'slug',
+                'view_name':'api-tag-detail',
+
+            }
+        }
 
 class StartupSerializer(ModelSerializer):
     # --> remove all of them 
