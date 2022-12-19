@@ -16,9 +16,9 @@ from rest_framework.views import APIView
 
 
 
-from .serializers import TagSerializer
+from .serializers import TagSerializer, StartupSerializer
 
-from .models import Tag
+from .models import Tag, Startup
 
 # Create your views here.
 
@@ -45,4 +45,24 @@ class TagApiList(APIView):
             )
         return Response(s_tag.data)
 
+# --- Startup ---
+class StartupAPIDetail(APIView):
+
+    def get(self, request, slug):
+        startup = get_object_or_404(Startup, slug=slug)
+        s_startup = StartupSerializer(
+            startup,
+            context={'request':request}
+        )
+        return Response(s_startup.data)
+
+class StartupAPIList(APIView):
+    def get(self, request):
+        startup_list = get_list_or_404(Startup)
+        s_startup = StartupSerializer(
+            startup_list,
+            many=True,
+            context={'request':request},
+        )
+        return Response(s_startup.data)
             
