@@ -1,3 +1,5 @@
+import os
+
 """
 Django settings for my_project project.
 
@@ -44,6 +46,7 @@ INSTALLED_APPS = [
     #first party apps
     'blog.apps.BlogConfig',
     'organizer.apps.OrganizerConfig',
+    'salvador.apps.SalvadorConfig',
 
 ]
 
@@ -62,7 +65,7 @@ ROOT_URLCONF = 'my_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS':[BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
