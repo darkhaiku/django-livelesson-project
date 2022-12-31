@@ -7,14 +7,11 @@ from django.views.generic import DetailView, ListView
 
 from rest_framework.generics import (
     ListAPIView,
-    RetrieveAPIView
+    ListCreateAPIView,
+    RetrieveAPIView,
 )
 
-from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_201_CREATED, 
-    HTTP_400_BAD_REQUEST,
-)
+
 
 
 from .serializers import TagSerializer, StartupSerializer, NewsLinkSerializer
@@ -43,24 +40,11 @@ class TagApiDetail(RetrieveAPIView):
 
 
 
-class TagApiList(ListAPIView):
+class TagApiList(ListCreateAPIView):
 
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-    # post method (function) is going to handle - http post method  
-    def post(self, request):
-        s_tag = self.serializer_class(
-            data=request.data, context={'request': request}
-        )
-        if s_tag.is_valid():
-            s_tag.save()
-            return Response(
-                s_tag.data, status=HTTP_201_CREATED
-            )
-        return Response(
-            s_tag.errors, status=HTTP_400_BAD_REQUEST
-        )
 
 # --- Startup ---
 class StartupAPIDetail(RetrieveAPIView):
