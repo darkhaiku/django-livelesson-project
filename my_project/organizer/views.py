@@ -44,8 +44,9 @@ class TagApiDetail(RetrieveAPIView):
     # detail need a /slug
     lookup_field = 'slug'
 
-    def put(self, request, slug):
-        """ update existing Tag with PUT """
+    def patch(self, request, slug):
+        """ update existing Tag with patch """
+        """ using patch method instead of put method """
         tag = self.get_object()
         s_tag = self.serializer_class(
             tag, 
