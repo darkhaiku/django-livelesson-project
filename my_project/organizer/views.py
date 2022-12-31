@@ -11,6 +11,12 @@ from rest_framework.generics import (
     RetrieveAPIView,
 )
 
+from rest_framework.response import Response
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+)
+
 
 
 
@@ -38,6 +44,21 @@ class TagApiDetail(RetrieveAPIView):
     # detail need a /slug
     lookup_field = 'slug'
 
+    def put(self, request, slug):
+        """ update existing Tag with PUT """
+        tag = get_object_or_404(Tag, slug=slug)
+        s_tag = TagSerializer(
+            tag, 
+            data=request.data,
+            context = {'request': request},
+        )
+        if s_tag.is_valid():
+            s_tag.save()
+            return Response(s_tag.data, status=HTTP_200_OK)
+        return Response(
+            s_tag.errors, status=HTTP_400_BAD_REQUEST
+        )
+
 
 
 class TagApiList(ListCreateAPIView):
@@ -53,6 +74,7 @@ class StartupAPIDetail(RetrieveAPIView):
     serializer_class = StartupSerializer
     # detail need a /slug
     lookup_field = 'slug'
+
 
 class StartupAPIList(ListAPIView):
     
